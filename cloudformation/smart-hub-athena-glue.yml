@@ -361,16 +361,12 @@ Resources:
   CrawlerETLParquetData:
     Type: AWS::Glue::Crawler
     Properties:
-       Name: smart-hub-etl-output-parquet
+      Name: smart-hub-etl-output-parquet
       Role: !GetAtt "CrawlerRole.Arn"
       Targets:
         S3Targets:
           - Path: !Join ["", ["s3://", !Ref "DataBucket", "/etl_output_parquet"]]
       DatabaseName: !Ref GlueDatabase
-        CatalogTargets:
-          - DatabaseName: !Ref GlueDatabase
-            Tables:
-              - etl_output_parquet
       SchemaChangePolicy:
         UpdateBehavior: "UPDATE_IN_DATABASE"
         DeleteBehavior: "LOG"
@@ -388,7 +384,7 @@ Resources:
         PythonVersion: 3
         ScriptLocation: !Sub "s3://${ScriptBucketName}/glue_scripts/rates_xml_to_parquet.py"
       DefaultArguments: {
-          "--s3_output_path": !Sub "s3://${DataBucketName}/electricity_rates_parquet",
+          "--s3_output_path": !Sub "s3://${DataBucketName}/electricity_rates_parquet/",
           "--source_glue_database": !Ref GlueDatabase,
           "--source_glue_table": "electricity_rates_xml",
           "--job-bookmark-option": "job-bookmark-enable",
